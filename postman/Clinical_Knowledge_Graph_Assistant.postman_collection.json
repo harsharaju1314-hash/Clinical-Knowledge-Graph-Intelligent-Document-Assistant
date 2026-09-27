@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "8f3b2d10-7461-4fa3-9e12-32a1c0d4811a",
+		"name": "Clinical Knowledge Graph & Intelligent Document Assistant",
+		"description": "Postman test collection for Clinical Knowledge Graph & Intelligent Document Assistant REST APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": ["{{base_url}}"],
+					"path": ["health"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Ingest Document",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"CARDIO-808 Phase 2 Safety Update\",\n  \"doc_type\": \"safety_report\",\n  \"content\": \"# CARDIO-808 Safety Summary\\n\\nCardiovax was evaluated for Resistant Hypertension in combination with standard diuretics. Mild orthostatic hypotension was observed in 4.5% of subjects with no serious adverse events reported.\",\n  \"metadata\": {\n    \"trial_id\": \"CARDIO-808\",\n    \"phase\": \"Phase 2\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/documents",
+					"host": ["{{base_url}}"],
+					"path": ["documents"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - List Documents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/documents",
+					"host": ["{{base_url}}"],
+					"path": ["documents"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Semantic Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"What adverse events and blood pressure outcomes were reported for Cardiovax?\",\n  \"top_k\": 3,\n  \"min_score\": 0.1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/search",
+					"host": ["{{base_url}}"],
+					"path": ["search"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Get Domain Ontology",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/graph/ontology",
+					"host": ["{{base_url}}"],
+					"path": ["graph", "ontology"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Query Knowledge Graph",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entity_id\": \"DRUG-CARDIOVAX\",\n  \"max_hops\": 2\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/graph/query",
+					"host": ["{{base_url}}"],
+					"path": ["graph", "query"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - List Entities (Filter by Drug)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/entities?entity_type=Drug",
+					"host": ["{{base_url}}"],
+					"path": ["entities"],
+					"query": [
+						{
+							"key": "entity_type",
+							"value": "Drug"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Get Entity by ID (with Connections)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/entities/DRUG-CARDIOVAX",
+					"host": ["{{base_url}}"],
+					"path": ["entities", "DRUG-CARDIOVAX"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Multi-Agent Ask (Grounded Clinical Q&A)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"question\": \"What clinical studies evaluate Cardiovax for Resistant Hypertension and what adverse events occurred?\",\n  \"include_graph\": true,\n  \"include_vector\": true,\n  \"top_k\": 3\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/ask",
+					"host": ["{{base_url}}"],
+					"path": ["ask"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 - Invalid Entity Creation (Ontology Violation)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"TEST-INVALID\",\n  \"name\": \"Test Molecule\",\n  \"entity_type\": \"NonExistentType\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/entities",
+					"host": ["{{base_url}}"],
+					"path": ["entities"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 - Re-Seed Synthetic Knowledge Base",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/seed",
+					"host": ["{{base_url}}"],
+					"path": ["seed"]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		}
+	]
+}

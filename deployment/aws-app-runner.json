@@ -1,0 +1,25 @@
+{
+  "ServiceName": "clinical-knowledge-graph-assistant",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/clinical-kg-assistant:latest",
+      "ImageConfiguration": {
+        "Port": "8000",
+        "RuntimeEnvironmentVariables": {
+          "APP_ENV": "production",
+          "DATABASE_URL": "postgresql://dbuser:dbpassword@clinical-rds-instance.xyz.us-east-1.rds.amazonaws.com:5432/clinical_kg_db",
+          "LLM_PROVIDER": "openai",
+          "OPENAI_MODEL": "gpt-4o-mini",
+          "TOP_K_CHUNKS": "4",
+          "MAX_GRAPH_HOPS": "2"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": true
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1 vCPU",
+    "Memory": "2 GB"
+  }
+}
